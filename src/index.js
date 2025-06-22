@@ -7,11 +7,7 @@ import { parquetReadObjects } from 'hyparquet';
  *  rows of a data table.
  */
 export default async function parquet(data) {
-  // Convert Uint8Array to ArrayBuffer if needed
-  const buffer = data instanceof Uint8Array 
-    ? data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
-    : data;
-  
+  const buffer = data instanceof Uint8Array ? data.buffer : data;
   return await parquetReadObjects({ file: buffer });
 }
 
