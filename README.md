@@ -4,6 +4,8 @@ Data loading for the [Apache Parquet](https://parquet.apache.org/) format.
 
 This package extends Vega's set of data format parsers to support the type `"parquet"` in Vega version 5.0 and higher. It can load Parquet binary data using the [`hyparquet`](https://github.com/hyparam/hyparquet) library. Internally, this package uses hyparquet to parse Parquet files and provides the data in a format suitable for Vega visualizations.
 
+You can try the Parquet loader in our Observable notebook examples on [Observable](https://observablehq.com/@vega/vega-lite-and-apache-parquet).
+
 ## Usage Instructions
 
 ### Browser Use
