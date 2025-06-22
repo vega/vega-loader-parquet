@@ -1,24 +1,18 @@
-import { tableFromIPC } from '@uwdata/flechette';
+import { parquetReadObjects } from 'hyparquet';
 
 /**
- * Load a data set in Apache Arrow format for use in Vega.
- * @param {*} data Either an already parsed table (created by the
- *  `@uwdata/flechette` or `apache-arrow` libraries) or Arrow IPC
- *  binary data as an `ArrayBuffer`, `Uint8Array`, or `Uint8Array[]`.
- * @returns {Record<string,any>[]} An array of data objects representing
+ * Load a data set in Apache Parquet format for use in Vega.
+ * @param {ArrayBuffer|Uint8Array} data Parquet binary data.
+ * @returns {Promise<Record<string,any>[]>} A promise that resolves to an array of data objects representing
  *  rows of a data table.
  */
-export default function arrow(data) {
-  return (isArrowTable(data) ? data : decodeIPC(data)).toArray();
+export default async function parquet(data) {
+  // Convert Uint8Array to ArrayBuffer if needed
+  const buffer = data instanceof Uint8Array 
+    ? data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
+    : data;
+  
+  return await parquetReadObjects({ file: buffer });
 }
 
-function isArrowTable(data) {
-  return data && data.schema && Array.isArray(data.schema.fields)
-    && typeof data.toArray === 'function';
-}
-
-function decodeIPC(data, options = { useProxy: true }) {
-  return tableFromIPC(data, options);
-}
-
-arrow.responseType = 'arrayBuffer';
+parquet.responseType = 'arrayBuffer';

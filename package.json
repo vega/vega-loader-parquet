@@ -1,21 +1,21 @@
 {
-  "name": "vega-loader-arrow",
-  "version": "0.3.2",
-  "description": "Data loader for the Apache Arrow format.",
+  "name": "vega-loader-parquet",
+  "version": "0.1.0",
+  "description": "Data loader for the Apache Parquet format.",
   "keywords": [
     "vega",
     "loader",
-    "arrow"
+    "parquet"
   ],
   "license": "BSD-3-Clause",
-  "author": "Jeffrey Heer (http://idl.cs.washington.edu)",
+  "author": "Dominik Moritz (https://www.domoritz.de)",
   "type": "module",
   "exports": {
     "default": "./src/index.js"
   },
-  "unpkg": "build/vega-loader-arrow.min.js",
-  "jsdelivr": "build/vega-loader-arrow.min.js",
-  "repository": "vega/vega-loader-arrow",
+  "unpkg": "build/vega-loader-parquet.min.js",
+  "jsdelivr": "build/vega-loader-parquet.min.js",
+  "repository": "vega/vega-loader-parquet",
   "scripts": {
     "prebuild": "rimraf build && mkdir build",
     "build": "rollup -c rollup.config.js",
@@ -23,12 +23,11 @@
     "test": "tape 'test/**/*-test.js' && eslint src test"
   },
   "dependencies": {
-    "@uwdata/flechette": "^2.0.1"
+    "hyparquet": "^1.16.2"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "apache-arrow": "^20.0.0",
     "eslint": "^9.29.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.44.0",

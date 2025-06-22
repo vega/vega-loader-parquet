@@ -1,63 +1,59 @@
-# vega-loader-arrow
+# vega-loader-parquet
 
-Data loading for the [Apache Arrow](https://arrow.apache.org/) format.
+Data loading for the [Apache Parquet](https://parquet.apache.org/) format.
 
-This package extends Vega's set of data format parsers to support the type `"arrow"` in Vega version 5.0 and higher. It can load either Apache Arrow IPC binary data or pre-parsed tables from the [`@uwdata/flechette`](https://idl.uw.edu/flechette/) or [`apache-arrow`](https://arrow.apache.org/docs/js/) libraries. Internally, this package bundles flechette to parse binary IPC data.
-
-You can try the Arrow loader in our Observable notebook examples for both [Vega](https://observablehq.com/@vega/vega-and-apache-arrow) and [Vega-](https://observablehq.com/@vega/apache-arrow-in-vega-lite)[Lite](https://observablehq.com/@randomfractals/chicago-crimes-arrow-data-vega-viz).
+This package extends Vega's set of data format parsers to support the type `"parquet"` in Vega version 5.0 and higher. It can load Parquet binary data using the [`hyparquet`](https://github.com/hyparam/hyparquet) library. Internally, this package uses hyparquet to parse Parquet files and provides the data in a format suitable for Vega visualizations.
 
 ## Usage Instructions
 
 ### Browser Use
 
-To use this package in a web application, include the compiled `vega-loader-arrow.min.js` JavaScript file as a script import on a web page.
+To use this package in a web application, include the compiled `vega-loader-parquet.min.js` JavaScript file as a script import on a web page.
 
-Import the vega-loader-arrow package _after_ Vega has been imported. For example, loading all libraries from a CDN:
+Import the vega-loader-parquet package _after_ Vega has been imported. For example, loading all libraries from a CDN:
 
 ```html
   <script src="https://cdn.jsdelivr.net/npm/vega"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-loader-arrow"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-loader-parquet"></script>
 ```
 
 ### Node.js or Bundle Use
 
-In the web browser case above, the Arrow data reader is automatically added to the `vega.format` data format registry. If you are instead importing the `vega-loader-arrow` package in node.js or for use in an application bundle, you will need to explicitly register the package:
+In the web browser case above, the Parquet data reader is automatically added to the `vega.format` data format registry. If you are instead importing the `vega-loader-parquet` package in node.js or for use in an application bundle, you will need to explicitly register the package:
 
 ```js
-import arrow from 'vega-loader-arrow';
+import parquet from 'vega-loader-parquet';
 import vega from 'vega';
 
-// register arrow reader under type 'arrow'
-formats('arrow', arrow);
+// register parquet reader under type 'parquet'
+formats('parquet', parquet);
 ```
 
 ### Vega Specifications
 
-Once vega-loader-arrow has been imported and registered, Vega specs can reference and load Arrow data like so:
+Once vega-loader-parquet has been imported and registered, Vega specs can reference and load Parquet data like so:
 
 ```json
 {
   "data": [
     {
-      "name": "scrabble",
-      "format": {"type": "arrow"},
-      "url": "https://gist.githubusercontent.com/TheNeuralBit/64d8cc13050c9b5743281dcf66059de5/raw/c146baf28a8e78cfe982c6ab5015207c4cbd84e3/scrabble.arrow"
+      "name": "data",
+      "format": {"type": "parquet"},
+      "url": "path/to/your/data.parquet"
     }
   ]
 }
 ```
 
-For more about the dataset above (concerning over 1.5M scrabble games!), see ["Introduction to Apache Arrow"](https://beta.observablehq.com/@theneuralbit/introduction-to-apache-arrow) by Brian Hulette.
-
 ## API Reference
 
-<a name="arrow" href="#arrow">#</a>
-vega.format.<b>arrow</b>(<i>data</i>)
-[<>](https://github.com/vega/vega-loader-arrow/blob/master/src/index.js "Source")
+<a name="parquet" href="#parquet">#</a>
+vega.format.<b>parquet</b>(<i>data</i>)
+[<>](https://github.com/vega/vega-loader-parquet/blob/master/src/index.js "Source")
 
-Returns an array of data objects for the input *data*. The *data* can either be Arrow IPC binary data as an `ArrayBuffer`, `Uint8Array`, or `Uint8Array[]`, or a pre-parsed table created by `@uwdata/flechette` or `apache-arrow`.
+Returns an array of data objects for the input *data*. The *data* should be Parquet binary data as an `ArrayBuffer` or `Uint8Array`.
 
-The returned data objects include properties for all named fields; property access results in a lookup against an underlying Arrow column. If the Arrow table includes multiple fields with the same name, the proxy object accesses the column with the lowest index. An error is thrown if a caller attempts to set values on named field properties. Writes to properties other than Arrow field names are supported, and will not affect the underlying Arrow data.
+The returned data objects include properties for all named fields from the Parquet file, providing a JavaScript object representation suitable for use in Vega visualizations.
 
 ## Making a release
 
